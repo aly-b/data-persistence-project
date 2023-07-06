@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
+    private MenuManager MenuManager;
+
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
+    string playerName;
+    int highScore = 0;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -34,7 +40,38 @@ public class MainManager : MonoBehaviour
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
+
+                //menuManager = MenuManager.Instance;
+                if (MenuManager.Instance != null)
+                {
+                    //Debug.Log(MenuManager.Instance);
+                    SetName(MenuManager.Instance.LoadName());
+                }
             }
+        }
+    }
+
+    void SetName(string name)
+    {
+        HighScoreText.text = "High Score: " + name + ": " + highScore;
+    }
+    // Probably to be deleted but *shrugs*
+    //public void SetName(string name)
+    //{
+    //    var nameHandler = GetComponentInChildren<MenuManager>();
+    //    if (nameHandler != null)
+    //    {
+    //        nameHandler.SetName(name);
+    //    }
+    //}
+
+    public void SetHighScore()
+    {
+        if (m_Points > highScore)
+        {
+            highScore = m_Points;
+            HighScoreText.text = "High Score: " + playerName + ": " + highScore;
+
         }
     }
 
@@ -72,5 +109,10 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
