@@ -12,25 +12,21 @@ public class Menu : MonoBehaviour
 {
     public void StartNew()
     {
-        MenuManager.Instance.SaveName();
-        //Debug.Log(MenuManager.Instance.SaveName());
         SceneManager.LoadScene(1);
     }
 
     public void SaveName()
     {
-        MenuManager.Instance.SaveName();
+        MenuManager.Instance.ResetTime();
     }
 
     public void LoadName()
     {
         MenuManager.Instance.LoadName();
-        //NamePicker.SelectName(MenuManager.Instance.playerName2);
     }
 
     public void Exit()
     {
-        MenuManager.Instance.SaveName();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else

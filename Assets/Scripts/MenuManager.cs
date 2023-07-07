@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-
     public static MenuManager Instance;
-    public string playerName2 = "Player 2";
+    public string playerName;
+    public TMP_InputField nameField;
 
     private void Awake()
     {
-        if (Instance == null) // If there is no instance already -thx, user
+            if (Instance == null) // If there is no instance already
         {
             DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
             Instance = this;
@@ -25,31 +26,20 @@ public class MenuManager : MonoBehaviour
         LoadName();
     }
 
-    [System.Serializable]
-    class SaveData
+    private void Update()
     {
-        public string playerName1 = "Player 1";
-    }
-
-    public void SaveName()
-    {
-        SaveData data = new();
-        data.playerName1 = playerName2;
-
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+        LoadName();
     }
 
     public void LoadName()
     {
-        string path = Application.persistentDataPath + "/savefile.json";
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
+        PlayerPrefs.GetString("playerName");
+        PlayerPrefs.Save();
+    }
 
-            playerName2 = data.playerName1;
-        }
+    public void ResetTime()
+    {
+        PlayerPrefs.SetString("playerName", nameField.text);
+        PlayerPrefs.Save();
     }
 }
