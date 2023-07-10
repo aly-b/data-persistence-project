@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System;
 
 public class MainManager : MonoBehaviour
 {
@@ -12,16 +13,16 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
     public int hs;
+    public static TextMeshProUGUI highScoresheet;
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
     public string playerName;
-
+    
     private bool m_Started = false;
     private int m_Points;
     private bool m_GameOver = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
@@ -43,21 +44,18 @@ public class MainManager : MonoBehaviour
 
     public void GetHighScore()
     {
-        string highScoreText = "High Score: ";
         playerName = PlayerPrefs.GetString("playerName");
-        string dots = ": ";
         hs = PlayerPrefs.GetInt("highScore");
-        HighScoreText.text = highScoreText + playerName + dots + hs.ToString();
+        HighScoreText.text = playerName;
         PlayerPrefs.Save();
 
         if (m_Points > hs)
         {
+            hs = m_Points;
             ResetTime();
             PlayerPrefs.Save();
         }
     }
-
-
 
     private void Update()
     {
@@ -66,7 +64,7 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
-                float randomDirection = Random.Range(-1.0f, 1.0f);
+                float randomDirection = UnityEngine.Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
 
