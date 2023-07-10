@@ -5,14 +5,15 @@ using UnityEngine.UI;
 using System.IO;
 using System;
 using System.Linq;
+using TMPro;
 
 public class HighScoreListFormation : MonoBehaviour, IComparable<int>
 {
+    public HighScoreListFormation HighScores;
+    public Text LegacyHighScores;
     private MainManager mainManager;
     int score;
     string player;
-    public Text LegacyHighScores;
-    public HighScoreListFormation HighScores;
 
     void Start()
     {
@@ -30,8 +31,12 @@ public class HighScoreListFormation : MonoBehaviour, IComparable<int>
         player = mainManager.playerName;
 
         List<HighScore> highScores = new() { };
-        highScores.Add(new HighScore() { Name = player, Score = score });
-        highScores.Add(new HighScore() { Name = player, Score = score });
+        highScores.Add(new HighScore() { Player1 = player, Score = score });
+        highScores.Add(new HighScore() { Player2 = player, Score = score });
+        highScores.Add(new HighScore() { Player3 = player, Score = score });
+        highScores.Add(new HighScore() { Player4 = player, Score = score });
+        highScores.Add(new HighScore() { Player5 = player, Score = score });
+        Debug.Log(highScores);
         SaveHighScores();
 
         IComparable<HighScore> scores =
@@ -52,7 +57,7 @@ public class HighScoreListFormation : MonoBehaviour, IComparable<int>
         return score.CompareTo(other);
     }
 
-    [Serializable]
+    [System.Serializable]
     class SaveData
     {
         public HighScoreListFormation HighScores;
@@ -83,8 +88,13 @@ public class HighScoreListFormation : MonoBehaviour, IComparable<int>
 
 public class HighScore : IEquatable<HighScore>
 {
-    public string Name { get; set; }
+    public string Player1 { get; set; }
+    public string Player2 { get; set; }
+    public string Player3 { get; set; }
+    public string Player4 { get; set; }
+    public string Player5 { get; set; }
     public int Score { get; set; }
+
     public override bool Equals(object obj)
     {
         if (obj == null) return false;
@@ -101,5 +111,4 @@ public class HighScore : IEquatable<HighScore>
         if (other == null) return false;
         return (this.Score.Equals(other.Score));
     }
-
 }

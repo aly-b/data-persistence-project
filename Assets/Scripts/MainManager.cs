@@ -17,7 +17,8 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
-    public string playerName;
+    public string playerName = "Player 1";
+    public int lowestHS;
     
     private bool m_Started = false;
     private int m_Points;

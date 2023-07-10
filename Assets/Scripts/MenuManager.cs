@@ -28,6 +28,7 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
+        ResetTime();
         LoadName();
     }
 
